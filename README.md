@@ -1,1 +1,4 @@
 # Algoritmos
+
+## Ideas del proyecto
+
