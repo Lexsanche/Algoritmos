@@ -5,6 +5,6 @@
 - Juan David Robledo
 
 ## Proyecto:
-<span style="color:green;">Damas chinas</span>
+<span style="font-size:24px; font-family:Times New Roman; font-weight:bold; letter-spacing:2px; color: green;";>Damas chinas</span>
 
 
