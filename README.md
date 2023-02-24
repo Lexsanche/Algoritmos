@@ -1,4 +1,10 @@
 # Algoritmos
+# Integrantes 
+- Nicolás Alexander Sánchez
+- Juan Manuel Durán
+- Juan David Robledo
 
-## Ideas del proyecto
+## Proyecto:
+<span style="color:green;">Damas chinas</span>
+
 
