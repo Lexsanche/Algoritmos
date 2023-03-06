@@ -18,7 +18,6 @@ def main():
     WHITE = (255, 255, 255)
 
     # importar el sprite del samurai principal
-    show_image = True
     sprite_sheet_walk = pygame.image.load('Samurai/Walk.png').convert_alpha()
     main_samurai = samuraiMain.SamuraiSprite(sprite_sheet_walk)
 
@@ -74,8 +73,6 @@ def main():
     while not game_over:
         # Pintar el fondo negro
         screen.fill(BLACK)
-        if show_image:
-            screen.blit(animation_list[0], (0, 340))
 
         # Manejar eventos
         for event in pygame.event.get():
@@ -85,18 +82,24 @@ def main():
         # Obtener las teclas presionadas
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RIGHT]:
-            show_image = False
             current_time = pygame.time.get_ticks()
             if current_time - last_update >= animation_cooldown:
                 frame = (frame + 1) % animation_steps
                 last_update = current_time
                 if frame >= len(animation_list):
                     frame = 0
-            # muestra la animación del samurai caminando en la posicion 0 0 de la pantalla
             screen.blit(animation_list[frame], (0, 340))
-        if not keys[pygame.K_RIGHT]:
-            show_image = True
-
+        elif keys[pygame.K_UP]:
+            current_time = pygame.time.get_ticks()
+            if current_time - last_update >= animation_cooldown:
+                frame = (frame + 1) % animation_steps
+                last_update = current_time
+                if frame >= len(jump_animation):
+                    frame = 0
+            screen.blit(jump_animation[frame], (0, 340))
+        else:
+            screen.fill(BLACK)
+            screen.blit(animation_list[0], (0, 340))
         # Actualizar la pantalla
         pygame.display.update()
 
