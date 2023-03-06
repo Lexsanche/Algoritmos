@@ -97,6 +97,14 @@ def main():
                 if frame >= len(jump_animation):
                     frame = 0
             screen.blit(jump_animation[frame], (0, 340))
+        elif keys[pygame.K_SPACE]:
+            current_time = pygame.time.get_ticks()
+            if current_time - last_update >= animation_cooldown:
+                frame = (frame + 1) % animation_steps
+                last_update = current_time
+                if frame >= len(attack_animation_1):
+                    frame = 0
+            screen.blit(attack_animation_1[frame], (0, 340))
         else:
             screen.fill(BLACK)
             screen.blit(animation_list[0], (0, 340))
