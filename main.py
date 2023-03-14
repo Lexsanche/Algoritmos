@@ -12,10 +12,7 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Juego de plataformas")
     # Cargar el fondo de imagen JPEG
-    #gif = VideoFileClip("mygif.gif")
-    #gif_surface = pygame.image.frombuffer(gif.get_frame(0.0), gif.size, "RGB")
-    #background_image = gif_surface
-    #background_image = pygame.image.load('Background/imagen.gif').convert()
+    background_image = pygame.image.load('Background/samurai.gif').convert()
     background_image = pygame.transform.scale(background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
     # Definir los colores
     BLACK = (0, 0, 0)
@@ -55,7 +52,7 @@ def main():
             show_image = False
             current_time = pygame.time.get_ticks()
             if current_time - last_update >= animation_cooldown:
-                frame = (frame + 1) % animation_steps
+                frame = (frame +1) % animation_steps
                 last_update = current_time
                 if frame >= len(animation_list):
                     frame = 0
@@ -65,9 +62,24 @@ def main():
             if background_x <= -bg_width:
                 background_x = 0
                 # Muestra la animación del samurai caminando en la posición 0, 340 de la pantalla
-                screen.blit(background_image, (background_x, 0))
-                screen.blit(background_image, (background_x + bg_width, 0))
-                screen.blit(animation_list[frame], (0, 340))
+                #screen.blit(background_image, (background_x, 0))
+                #screen.blit(background_image, (background_x + bg_width, 0))
+                #screen.blit(animation_list[frame], (0, 340))
+        if keys[pygame.K_LEFT]:
+            show_image = False
+            current_time = pygame.time.get_ticks()
+            if current_time - last_update >= animation_cooldown:
+                frame = (frame + 1) % animation_steps
+                last_update = current_time
+                if frame >= len(animation_list):
+                    frame = 0
+            # muestra la animación del samurai caminando hacia la izquierda en la posicion 0, 340 de la pantalla
+            background_x += 0.5
+            bg_width = background_image.get_width()
+            if background_x > 0:
+                background_x = -bg_width
+            #screen.blit(background_image, (background_x, 0))
+            #screen.blit(background_image, (background_x + bg_width, 0))
             #screen.blit(animation_list[frame], (0, 340))
         if not keys[pygame.K_RIGHT]:
             show_image = True
