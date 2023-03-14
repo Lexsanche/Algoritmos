@@ -1,7 +1,6 @@
 import pygame
 import samuraiMain
 
-
 def main():
     # Inicializar Pygame
     pygame.init()
@@ -13,7 +12,10 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Juego de plataformas")
     # Cargar el fondo de imagen JPEG
-    background_image = pygame.image.load('Background/fondo.jpg').convert()
+    #gif = VideoFileClip("mygif.gif")
+    #gif_surface = pygame.image.frombuffer(gif.get_frame(0.0), gif.size, "RGB")
+    #background_image = gif_surface
+    #background_image = pygame.image.load('Background/imagen.gif').convert()
     background_image = pygame.transform.scale(background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
     # Definir los colores
     BLACK = (0, 0, 0)
@@ -34,11 +36,11 @@ def main():
     main_samurai.animation_list(animation_steps, animation_list)
     # Definir el estado del juego
     game_over = False
-
+    background_x=0
     # Loop principal del juego
     while not game_over:
         # Pintar el fondo negro
-        screen.blit(background_image, (0, 0))
+        #screen.blit(background_image, (0, 0))
         if show_image:
             screen.blit(animation_list[0], (0, 340))
 
@@ -58,10 +60,26 @@ def main():
                 if frame >= len(animation_list):
                     frame = 0
             # muestra la animación del samurai caminando en la posicion 0 0 de la pantalla
-            screen.blit(animation_list[frame], (0, 340))
+            background_x-=0.5
+            bg_width = background_image.get_width()
+            if background_x <= -bg_width:
+                background_x = 0
+                # Muestra la animación del samurai caminando en la posición 0, 340 de la pantalla
+                screen.blit(background_image, (background_x, 0))
+                screen.blit(background_image, (background_x + bg_width, 0))
+                screen.blit(animation_list[frame], (0, 340))
+            #screen.blit(animation_list[frame], (0, 340))
         if not keys[pygame.K_RIGHT]:
             show_image = True
+        # Pintar el fondo
+        for i in range(-1, SCREEN_WIDTH // background_image.get_width() + 1):
+            screen.blit(background_image, (background_x + i * background_image.get_width(), 0))
 
+        # Pintar el samurai
+        if show_image:
+            screen.blit(animation_list[0], (0, 340))
+        else:
+            screen.blit(animation_list[frame], (0, 340))
         # Actualizar la pantalla
         pygame.display.update()
 
