@@ -20,24 +20,30 @@ def main():
 
     # importar el sprite del samurai principal
     show_image = True
+    walking = False
+    jumping = False
+
     sprite_sheet_walk = pygame.image.load('Samurai/Walk.png').convert_alpha()
     main_samurai = samuraiMain.SamuraiSprite(sprite_sheet_walk)
+    sprite_sheet_jump = pygame.image.load('Samurai/Jump.png').convert_alpha()
+    jump_samurai = samuraiMain.SamuraiSprite(sprite_sheet_jump)
 
     #creando los loops de la animación de caminado
     animation_list = []
+    jump_list = []
     animation_steps = 9
     last_update = pygame.time.get_ticks()
     animation_cooldown = 75
     frame = 0
 
     main_samurai.animation_list(animation_steps, animation_list)
+    jump_samurai.animation_list(animation_steps, jump_list)
     # Definir el estado del juego
     game_over = False
     background_x=0
     # Loop principal del juego
     while not game_over:
-        # Pintar el fondo negro
-        #screen.blit(background_image, (0, 0))
+
         if show_image:
             screen.blit(animation_list[0], (0, 340))
 
@@ -50,6 +56,7 @@ def main():
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RIGHT]:
             show_image = False
+            walking = True
             current_time = pygame.time.get_ticks()
             if current_time - last_update >= animation_cooldown:
                 frame = (frame +1) % animation_steps
@@ -61,12 +68,11 @@ def main():
             bg_width = background_image.get_width()
             if background_x <= -bg_width:
                 background_x = 0
-                # Muestra la animación del samurai caminando en la posición 0, 340 de la pantalla
-                #screen.blit(background_image, (background_x, 0))
-                #screen.blit(background_image, (background_x + bg_width, 0))
-                #screen.blit(animation_list[frame], (0, 340))
+
+
         if keys[pygame.K_LEFT]:
             show_image = False
+            walking = True
             current_time = pygame.time.get_ticks()
             if current_time - last_update >= animation_cooldown:
                 frame = (frame + 1) % animation_steps
@@ -78,10 +84,19 @@ def main():
             bg_width = background_image.get_width()
             if background_x > 0:
                 background_x = -bg_width
-            #screen.blit(background_image, (background_x, 0))
-            #screen.blit(background_image, (background_x + bg_width, 0))
-            #screen.blit(animation_list[frame], (0, 340))
-        if not keys[pygame.K_RIGHT]:
+
+        if keys[pygame.K_UP]:
+            show_image = False
+            walking = False
+            jumping = True
+            current_time = pygame.time.get_ticks()
+            if current_time - last_update >= animation_cooldown:
+                frame = (frame + 1) % animation_steps
+                last_update = current_time
+                if frame >= len(jump_list):
+                    frame = 0
+
+        if not keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT] and not keys[pygame.K_UP]:
             show_image = True
         # Pintar el fondo
         for i in range(-1, SCREEN_WIDTH // background_image.get_width() + 1):
@@ -90,8 +105,12 @@ def main():
         # Pintar el samurai
         if show_image:
             screen.blit(animation_list[0], (0, 340))
-        else:
+        elif walking and not show_image:
             screen.blit(animation_list[frame], (0, 340))
+        elif jumping:
+            screen.blit(jump_list[frame], (0, 340))
+        else:
+            pass
         # Actualizar la pantalla
         pygame.display.update()
 
