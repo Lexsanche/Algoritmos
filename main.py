@@ -6,11 +6,19 @@ def main():
     pygame.init()
 
     # Definir las dimensiones de la pantalla
-
     SCREEN_WIDTH = 1200
     SCREEN_HEIGHT = 600
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Juego de plataformas")
+
+    # Creacion del obstaculo
+    obstacle_width = 50
+    obstacle_height = 50
+    obstacle_x = SCREEN_WIDTH - obstacle_width
+    obstacle_y = SCREEN_HEIGHT - obstacle_height
+    obstacle_speed = 1.4
+    obstacle_color = (255, 255, 255)
+
     # Cargar el fondo de imagen JPEG
     background_image = pygame.image.load('Background/samurai.gif').convert()
     background_image = pygame.transform.scale(background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -111,6 +119,22 @@ def main():
             screen.blit(jump_list[frame], (0, 340))
         else:
             pass
+
+        # Mover el obstáculo hacia la izquierda
+        obstacle_x -= obstacle_speed
+
+        # Verificar si el obstáculo se choca con el samurai
+        if obstacle_x < 100 and obstacle_y > 290:
+            game_over = True
+
+        # Dibujar el obstáculo
+        pygame.draw.rect(screen, obstacle_color, (obstacle_x, obstacle_y, obstacle_width, obstacle_height))
+
+        # Verificar si el obstáculo ha salido de la pantalla y reposicionarlo si es necesario
+        if obstacle_x < -obstacle_width:
+            obstacle_x = SCREEN_WIDTH
+            obstacle_y = SCREEN_HEIGHT - obstacle_height
+
         # Actualizar la pantalla
         pygame.display.update()
 
