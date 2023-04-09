@@ -50,6 +50,7 @@ def main():
     game_over = False
     background_x=0
     puntaje=0
+    game_over_screen = True
 
 
     # Loop principal del juego
@@ -153,6 +154,17 @@ def main():
 
         # Actualizar la pantalla
         pygame.display.update()
+    while game_over_screen:
+        screen.fill(BLACK)
+        font = pygame.font.Font(None, 48)
+        text_surface = font.render('Puntaje final: ' + str(puntaje), True, WHITE)
+        text_rect = text_surface.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+        screen.blit(text_surface, text_rect)
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game_over_screen = False
 
     # Salir del juego
     pygame.quit()
