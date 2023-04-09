@@ -49,6 +49,9 @@ def main():
     # Definir el estado del juego
     game_over = False
     background_x=0
+    puntaje=0
+
+
     # Loop principal del juego
     while not game_over:
 
@@ -63,6 +66,7 @@ def main():
         # Obtener las teclas presionadas
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RIGHT]:
+            puntaje = puntaje + 10
             show_image = False
             walking = True
             current_time = pygame.time.get_ticks()
@@ -79,6 +83,7 @@ def main():
 
 
         if keys[pygame.K_LEFT]:
+            puntaje= puntaje-10
             show_image = False
             walking = True
             current_time = pygame.time.get_ticks()
@@ -106,9 +111,20 @@ def main():
 
         if not keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT] and not keys[pygame.K_UP]:
             show_image = True
+        # Crear una superficie de texto
+        font = pygame.font.Font(None, 36)
+        text_surface = font.render('Puntaje:' + str(puntaje), True, WHITE)
+
+        # Obtener las dimensiones de la superficie de texto
+        text_rect = text_surface.get_rect()
+
+        # Definir la posición del texto
+        text_x = SCREEN_WIDTH - text_rect.width - 10  # 10 es la separación desde el borde derecho de la pantalla
+        text_y = 10  # 10 es la separación desde el borde superior de la pantalla
         # Pintar el fondo
         for i in range(-1, SCREEN_WIDTH // background_image.get_width() + 1):
             screen.blit(background_image, (background_x + i * background_image.get_width(), 0))
+            screen.blit(text_surface, (text_x, text_y))
 
         # Pintar el samurai
         if show_image:
@@ -116,7 +132,7 @@ def main():
         elif walking and not show_image:
             screen.blit(animation_list[frame], (0, 340))
         elif jumping:
-            screen.blit(jump_list[frame], (0, 340))
+            screen.blit(jump_list[frame], (0, 100))
         else:
             pass
 
