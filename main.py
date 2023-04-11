@@ -81,6 +81,7 @@ def main():
             bg_width = background_image.get_width()
             if background_x <= -bg_width:
                 background_x = 0
+            obstacle_speed*=1.005
 
 
         if keys[pygame.K_LEFT]:
@@ -98,6 +99,7 @@ def main():
             bg_width = background_image.get_width()
             if background_x > 0:
                 background_x = -bg_width
+            obstacle_speed *= 0.995
 
         if keys[pygame.K_UP]:
             show_image = False
@@ -113,7 +115,7 @@ def main():
         if not keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT] and not keys[pygame.K_UP]:
             show_image = True
         # Crear una superficie de texto
-        font = pygame.font.Font(None, 36)
+        font = pygame.font.SysFont("IMPACT", 36)
         text_surface = font.render('Puntaje:' + str(puntaje), True, WHITE)
 
         # Obtener las dimensiones de la superficie de texto
@@ -156,10 +158,14 @@ def main():
         pygame.display.update()
     while game_over_screen:
         screen.fill(BLACK)
-        font = pygame.font.Font(None, 48)
+        font = pygame.font.SysFont("IMPACT", 48)
+        screen.blit(background_image, (0, 0))
         text_surface = font.render('Puntaje final: ' + str(puntaje), True, WHITE)
         text_rect = text_surface.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
         screen.blit(text_surface, text_rect)
+        fin = font.render('GAME OVER', True, WHITE)
+        text_rect2 = fin.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2.5))
+        screen.blit(fin, text_rect2)
         pygame.display.update()
 
         for event in pygame.event.get():
