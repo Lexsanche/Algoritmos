@@ -31,6 +31,7 @@ def main():
     walking = False
     walking_inversed = False
     jumping = False
+    attack = False
     pos_x = 0
     pos_y = 340
 
@@ -40,19 +41,23 @@ def main():
     main_samurai_inverted = samuraiMain.SamuraiSprite(sprite_sheet_walk_inverted)
     sprite_sheet_jump = pygame.image.load('Samurai/Jump.png').convert_alpha()
     jump_samurai = samuraiMain.SamuraiSprite(sprite_sheet_jump)
+    sprite_sheet_attack = pygame.image.load('Samurai/Attack_1.png').convert_alpha()
+    attack_samurai = samuraiMain.SamuraiSprite(sprite_sheet_attack)
 
     #creando los loops de la animación de caminado
     animation_list = []
     animation_list_inverted = []
     jump_list = []
+    attack_list = []
     animation_steps = 9
     last_update = pygame.time.get_ticks()
     animation_cooldown = 75
     frame = 0
 
     main_samurai.animation_list(animation_steps, animation_list)
-    main_samurai_inverted.animation_list(animation_steps,animation_list_inverted)
+    main_samurai_inverted.animation_list(animation_steps, animation_list_inverted)
     jump_samurai.animation_list(animation_steps, jump_list)
+    attack_samurai.animation_list(animation_steps, attack_list)
     # Definir el estado del juego
     game_over = False
     background_x=0
@@ -78,6 +83,7 @@ def main():
             show_image = False
             walking_inversed = False
             jumping = False
+            attack = False
             walking = True
             current_time = pygame.time.get_ticks()
             if current_time - last_update >= animation_cooldown:
@@ -90,7 +96,7 @@ def main():
             bg_width = background_image.get_width()
             if background_x <= -bg_width:
                 background_x = 0
-            obstacle_speed*=1.005
+            obstacle_speed*=1.0029
 
 
         if keys[pygame.K_LEFT]:
@@ -98,6 +104,7 @@ def main():
             show_image = False
             walking = False
             jumping = False
+            attack = False
             walking_inversed = True
             current_time = pygame.time.get_ticks()
             if current_time - last_update >= animation_cooldown:
@@ -115,6 +122,7 @@ def main():
         if keys[pygame.K_UP]:
             show_image = False
             walking = False
+            attack = False
             jumping = True
             current_time = pygame.time.get_ticks()
             if current_time - last_update >= animation_cooldown:
@@ -123,7 +131,20 @@ def main():
                 if frame >= len(jump_list):
                     frame = 0
 
-        if not keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT] and not keys[pygame.K_UP]:
+        if keys[pygame.K_SPACE]:
+            show_image = False
+            walking = False
+            walking_inversed = False
+            jumping = False
+            attack = True
+            current_time = pygame.time.get_ticks()
+            if current_time - last_update >= animation_cooldown:
+                frame = (frame + 1) % animation_steps
+                last_update = current_time
+                if frame >= len(jump_list):
+                    frame = 0
+
+        if not keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT] and not keys[pygame.K_UP]and not keys[pygame.K_SPACE]:
             show_image = True
         # Crear una superficie de texto
         font = pygame.font.SysFont("IMPACT", 36)
@@ -144,11 +165,14 @@ def main():
         if show_image:
             pos_y = 340
             screen.blit(animation_list[0], (0, 340))
-        elif walking and not show_image and not walking_inversed and not jumping:
+        elif walking and not show_image and not walking_inversed and not jumping and not attack:
             screen.blit(animation_list[frame], (0, 340))
             pos_y = 340
-        elif walking_inversed and not show_image and not walking and not jumping:
+        elif walking_inversed and not show_image and not walking and not jumping and not attack:
             screen.blit(animation_list_inverted[frame], (0, 340))
+            pos_y = 340
+        elif attack and not show_image and not walking and not jumping and not walking_inversed:
+            screen.blit(attack_list[frame], (0, 340))
             pos_y = 340
         elif jumping:
             pos_y = 100
