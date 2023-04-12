@@ -192,6 +192,7 @@ def main():
             else:
                 screen.blit(animation_list[frame], (0, 340))
                 pos_y = 340
+                attack = False
         elif jumping:
             pos_y = 100
             screen.blit(jump_list[frame], (0, 285))
