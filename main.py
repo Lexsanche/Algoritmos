@@ -30,6 +30,8 @@ def main():
     show_image = True
     walking = False
     jumping = False
+    pos_x = 0
+    pos_y = 340
 
     sprite_sheet_walk = pygame.image.load('Samurai/Walk.png').convert_alpha()
     main_samurai = samuraiMain.SamuraiSprite(sprite_sheet_walk)
@@ -131,11 +133,14 @@ def main():
 
         # Pintar el samurai
         if show_image:
+            pos_y = 340
             screen.blit(animation_list[0], (0, 340))
         elif walking and not show_image:
             screen.blit(animation_list[frame], (0, 340))
+            pos_y = 340
         elif jumping:
-            screen.blit(jump_list[frame], (0, 100))
+            pos_y = 100
+            screen.blit(jump_list[frame], (0, 200))
         else:
             pass
 
@@ -143,7 +148,7 @@ def main():
         obstacle_x -= obstacle_speed
 
         # Verificar si el obstáculo se choca con el samurai
-        if obstacle_x < 100 and obstacle_y > 290:
+        if (obstacle_x < 100 and obstacle_y > 340) and (pos_x == 0 and pos_y == 340 ):
             game_over = True
 
         # Dibujar el obstáculo
