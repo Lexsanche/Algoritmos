@@ -1,4 +1,6 @@
 import pygame
+
+import Explosion
 import samuraiMain
 
 def main():
@@ -43,12 +45,19 @@ def main():
     jump_samurai = samuraiMain.SamuraiSprite(sprite_sheet_jump)
     sprite_sheet_attack = pygame.image.load('Samurai/Attack_1.png').convert_alpha()
     attack_samurai = samuraiMain.SamuraiSprite(sprite_sheet_attack)
+    explosions = 10
+    explosion_list = []
+    for i in range(explosions):
+        explosion_list.append(pygame.image.load(f'Circle_explosion/Circle_explosion{i+1}.png').convert_alpha())
+    main_explosion = Explosion.ExplosionSprite(explosion_list)
+
 
     #creando los loops de la animación de caminado
     animation_list = []
     animation_list_inverted = []
     jump_list = []
     attack_list = []
+    exploding = []
     animation_steps = 9
     attack_steps = 4
     last_update = pygame.time.get_ticks()
@@ -59,6 +68,7 @@ def main():
     main_samurai_inverted.animation_list(animation_steps, animation_list_inverted)
     jump_samurai.animation_list(animation_steps, jump_list)
     attack_samurai.animation_list(attack_steps, attack_list)
+    main_explosion.animation_list(explosions, explosion_list)
     # Definir el estado del juego
     game_over = False
     background_x=0
@@ -206,10 +216,18 @@ def main():
         if (obstacle_x < 100 and obstacle_y > 340) and (pos_x == 0 and pos_y == 340 ):
             game_over = True
 
-        if (obstacle_x < 100 and obstacle_y > 340) and (pos_x == 0 and pos_y == 340 ) and attack:
+        if (obstacle_x < 100 and obstacle_y > 340) and (pos_x == 0 and pos_y == 340) and attack:
             game_over = False
             obstacle_x = SCREEN_WIDTH
             obstacle_y = SCREEN_HEIGHT - obstacle_height
+            current_time = pygame.time.get_ticks()
+            if current_time - last_update >= animation_cooldown:
+                frame = (frame + 1) % attack_steps
+                last_update = current_time
+                if frame >= len(attack_list):
+                    frame = 0
+            screen.blit(explosion_list[frame], (0, 300))
+
 
 
         # Dibujar el obstáculo
