@@ -29,17 +29,21 @@ def main():
     # importar el sprite del samurai principal
     show_image = True
     walking = False
+    walking_inversed = False
     jumping = False
     pos_x = 0
     pos_y = 340
 
     sprite_sheet_walk = pygame.image.load('Samurai/Walk.png').convert_alpha()
     main_samurai = samuraiMain.SamuraiSprite(sprite_sheet_walk)
+    sprite_sheet_walk_inverted = pygame.image.load('Samurai/Walk_inverted.png').convert_alpha()
+    main_samurai_inverted = samuraiMain.SamuraiSprite(sprite_sheet_walk_inverted)
     sprite_sheet_jump = pygame.image.load('Samurai/Jump.png').convert_alpha()
     jump_samurai = samuraiMain.SamuraiSprite(sprite_sheet_jump)
 
     #creando los loops de la animación de caminado
     animation_list = []
+    animation_list_inverted = []
     jump_list = []
     animation_steps = 9
     last_update = pygame.time.get_ticks()
@@ -47,6 +51,7 @@ def main():
     frame = 0
 
     main_samurai.animation_list(animation_steps, animation_list)
+    main_samurai_inverted.animation_list(animation_steps,animation_list_inverted)
     jump_samurai.animation_list(animation_steps, jump_list)
     # Definir el estado del juego
     game_over = False
@@ -71,6 +76,8 @@ def main():
         if keys[pygame.K_RIGHT]:
             puntaje = puntaje + 10
             show_image = False
+            walking_inversed = False
+            jumping = False
             walking = True
             current_time = pygame.time.get_ticks()
             if current_time - last_update >= animation_cooldown:
@@ -89,7 +96,9 @@ def main():
         if keys[pygame.K_LEFT]:
             puntaje= puntaje-10
             show_image = False
-            walking = True
+            walking = False
+            jumping = False
+            walking_inversed = True
             current_time = pygame.time.get_ticks()
             if current_time - last_update >= animation_cooldown:
                 frame = (frame + 1) % animation_steps
@@ -135,8 +144,11 @@ def main():
         if show_image:
             pos_y = 340
             screen.blit(animation_list[0], (0, 340))
-        elif walking and not show_image:
+        elif walking and not show_image and not walking_inversed and not jumping:
             screen.blit(animation_list[frame], (0, 340))
+            pos_y = 340
+        elif walking_inversed and not show_image and not walking and not jumping:
+            screen.blit(animation_list_inverted[frame], (0, 340))
             pos_y = 340
         elif jumping:
             pos_y = 100
