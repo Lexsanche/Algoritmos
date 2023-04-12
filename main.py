@@ -50,6 +50,7 @@ def main():
     jump_list = []
     attack_list = []
     animation_steps = 9
+    attack_steps = 4
     last_update = pygame.time.get_ticks()
     animation_cooldown = 75
     frame = 0
@@ -57,7 +58,7 @@ def main():
     main_samurai.animation_list(animation_steps, animation_list)
     main_samurai_inverted.animation_list(animation_steps, animation_list_inverted)
     jump_samurai.animation_list(animation_steps, jump_list)
-    attack_samurai.animation_list(animation_steps, attack_list)
+    attack_samurai.animation_list(attack_steps, attack_list)
     # Definir el estado del juego
     game_over = False
     background_x=0
@@ -139,9 +140,9 @@ def main():
             attack = True
             current_time = pygame.time.get_ticks()
             if current_time - last_update >= animation_cooldown:
-                frame = (frame + 1) % animation_steps
+                frame = (frame + 1) % attack_steps
                 last_update = current_time
-                if frame >= len(jump_list):
+                if frame >= len(attack_list):
                     frame = 0
 
         if not keys[pygame.K_RIGHT] and not keys[pygame.K_LEFT] and not keys[pygame.K_UP]and not keys[pygame.K_SPACE]:
