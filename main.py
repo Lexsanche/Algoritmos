@@ -140,7 +140,7 @@ def main():
             pos_y = 340
         elif jumping:
             pos_y = 100
-            screen.blit(jump_list[frame], (0, 200))
+            screen.blit(jump_list[frame], (0, 285))
         else:
             pass
 
