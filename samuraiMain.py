@@ -4,12 +4,11 @@ import pygame
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
-class SamuraiSprite:
 
+class SamuraiSprite:
 
     def __init__(self, img):
         self.sheet = img
-
 
     def get_image(self, frame, width, height, scale, color):
         img = pygame.Surface((width, height)).convert_alpha()

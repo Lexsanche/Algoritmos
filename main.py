@@ -132,6 +132,19 @@ def main():
                 if frame >= len(jump_list):
                     frame = 0
 
+        if keys[pygame.K_SPACE] and keys[pygame.K_RIGHT]:
+            show_image = False
+            walking = False
+            walking_inversed = False
+            jumping = False
+            attack = True
+            current_time = pygame.time.get_ticks()
+            if current_time - last_update >= animation_cooldown:
+                frame = (frame + 1) % attack_steps
+                last_update = current_time
+                if frame >= len(attack_list):
+                    frame = 0
+
         if keys[pygame.K_SPACE]:
             show_image = False
             walking = False
@@ -173,8 +186,12 @@ def main():
             screen.blit(animation_list_inverted[frame], (0, 340))
             pos_y = 340
         elif attack and not show_image and not walking and not jumping and not walking_inversed:
-            screen.blit(attack_list[frame], (0, 340))
-            pos_y = 340
+            if frame < len(attack_list):
+                screen.blit(attack_list[frame], (0, 340))
+                pos_y = 340
+            else:
+                screen.blit(animation_list[frame], (0, 340))
+                pos_y = 340
         elif jumping:
             pos_y = 100
             screen.blit(jump_list[frame], (0, 285))
@@ -187,6 +204,12 @@ def main():
         # Verificar si el obstáculo se choca con el samurai
         if (obstacle_x < 100 and obstacle_y > 340) and (pos_x == 0 and pos_y == 340 ):
             game_over = True
+
+        if (obstacle_x < 100 and obstacle_y > 340) and (pos_x == 0 and pos_y == 340 ) and attack:
+            game_over = False
+            obstacle_x = SCREEN_WIDTH
+            obstacle_y = SCREEN_HEIGHT - obstacle_height
+
 
         # Dibujar el obstáculo
         pygame.draw.rect(screen, obstacle_color, (obstacle_x, obstacle_y, obstacle_width, obstacle_height))
