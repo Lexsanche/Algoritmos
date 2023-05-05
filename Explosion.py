@@ -6,18 +6,16 @@ WHITE = (255, 255, 255)
 
 
 class ExplosionSprite:
-
-    def __init__(self, imgn):
+    def __init__(self):
         self.img = []
-        self.img = imgn
 
     def get_image(self, frame, width, height, scale, color):
         img = pygame.Surface((width, height)).convert_alpha()
-        img.blit(self.sheet, (0, 0), ((frame * width), 0, width, height))
+        img.blit(self.img[frame], (0, 0))
         img = pygame.transform.scale(img, (width * scale, height * scale))
         img.set_colorkey(color)
         return img
 
-    def animation_list(self, animation_steps, imgn):
-        for i in range(animation_steps):
-            self.img.append(imgn[i])
+    def animation_list(self, imgn):
+        for i in imgn:
+            self.img.append(i)

@@ -49,26 +49,25 @@ def main():
     explosion_list = []
     for i in range(explosions):
         explosion_list.append(pygame.image.load(f'Circle_explosion/Circle_explosion{i+1}.png').convert_alpha())
-    main_explosion = Explosion.ExplosionSprite(explosion_list)
-
+    main_explosion = Explosion.ExplosionSprite()
+    main_explosion.animation_list(explosion_list)
 
     #creando los loops de la animación de caminado
     animation_list = []
     animation_list_inverted = []
     jump_list = []
     attack_list = []
-    exploding = []
     animation_steps = 9
     attack_steps = 4
     last_update = pygame.time.get_ticks()
     animation_cooldown = 75
+    explosion_cooldown = 100
     frame = 0
 
     main_samurai.animation_list(animation_steps, animation_list)
     main_samurai_inverted.animation_list(animation_steps, animation_list_inverted)
     jump_samurai.animation_list(animation_steps, jump_list)
     attack_samurai.animation_list(attack_steps, attack_list)
-    main_explosion.animation_list(explosions, explosion_list)
     # Definir el estado del juego
     game_over = False
     background_x=0
@@ -190,11 +189,22 @@ def main():
             pos_y = 340
             screen.blit(animation_list[0], (0, 340))
         elif walking and not show_image and not walking_inversed and not jumping and not attack:
-            screen.blit(animation_list[frame], (0, 340))
-            pos_y = 340
+            if frame < len(animation_list):
+                screen.blit(animation_list[frame], (0, 340))
+                pos_y = 340
+            else:
+                screen.blit(animation_list[frame], (0, 340))
+                pos_y = 340
+                walking = False
         elif walking_inversed and not show_image and not walking and not jumping and not attack:
-            screen.blit(animation_list_inverted[frame], (0, 340))
-            pos_y = 340
+            if frame < len(animation_list):
+                screen.blit(animation_list_inverted[frame], (0, 340))
+                pos_y = 340
+            else:
+                screen.blit(animation_list_inverted[frame], (0, 340))
+                pos_y = 340
+                walking_inversed = False
+
         elif attack and not show_image and not walking and not jumping and not walking_inversed:
             if frame < len(attack_list):
                 screen.blit(attack_list[frame], (0, 340))
@@ -205,7 +215,13 @@ def main():
                 attack = False
         elif jumping:
             pos_y = 100
-            screen.blit(jump_list[frame], (0, 285))
+            if frame < len(jump_list):
+                if frame == (explosions-1) or frame == 0 or frame == 1:
+                    screen.blit(jump_list[frame], (0, 340))
+                    pos_y = 340
+                else:
+                    screen.blit(jump_list[frame], (0, 285))
+
         else:
             pass
 
@@ -218,15 +234,16 @@ def main():
 
         if (obstacle_x < 100 and obstacle_y > 340) and (pos_x == 0 and pos_y == 340) and attack:
             game_over = False
+            puntaje = puntaje + 15
             obstacle_x = SCREEN_WIDTH
             obstacle_y = SCREEN_HEIGHT - obstacle_height
             current_time = pygame.time.get_ticks()
-            if current_time - last_update >= animation_cooldown:
-                frame = (frame + 1) % attack_steps
+            if current_time - last_update >= explosion_cooldown:
+                frame = (frame + 1) % explosions
                 last_update = current_time
-                if frame >= len(attack_list):
+                if frame >= len(explosions):
                     frame = 0
-            screen.blit(explosion_list[frame], (0, 300))
+            screen.blit(explosion_list[frame], (100, 300))
 
 
 
@@ -261,4 +278,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+      main()
