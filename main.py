@@ -1,5 +1,5 @@
 import pygame
-
+import random
 import Explosion
 import samuraiMain
 
@@ -18,7 +18,8 @@ def main():
     obstacle_height = 50
     obstacle_x = SCREEN_WIDTH - obstacle_width
     obstacle_y = SCREEN_HEIGHT - obstacle_height
-    obstacle_speed = 1.4
+    obstacle_speed = 3
+    obstacle_counter = 0
     obstacle_color = (255, 255, 255)
 
     # Cargar el fondo de imagen JPEG
@@ -34,6 +35,7 @@ def main():
     walking_inversed = False
     jumping = False
     attack = False
+    obs_destroyed = False
     pos_x = 0
     pos_y = 340
 
@@ -77,7 +79,6 @@ def main():
 
     # Loop principal del juego
     while not game_over:
-
         if show_image:
             screen.blit(animation_list[0], (0, 340))
 
@@ -85,7 +86,6 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 game_over = True
-
         # Obtener las teclas presionadas
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RIGHT]:
@@ -106,7 +106,8 @@ def main():
             bg_width = background_image.get_width()
             if background_x <= -bg_width:
                 background_x = 0
-            obstacle_speed*=1.0029
+
+
 
 
         if keys[pygame.K_LEFT]:
@@ -229,11 +230,12 @@ def main():
         obstacle_x -= obstacle_speed
 
         # Verificar si el obstáculo se choca con el samurai
-        if (obstacle_x < 100 and obstacle_y > 340) and (pos_x == 0 and pos_y == 340 ):
+        if (obstacle_x < 100 and obstacle_y > 340) and (pos_x == 0 and pos_y == 340):
             game_over = True
 
         if (obstacle_x < 100 and obstacle_y > 340) and (pos_x == 0 and pos_y == 340) and attack:
             game_over = False
+            obs_destroyed = True
             puntaje = puntaje + 15
             obstacle_x = SCREEN_WIDTH
             obstacle_y = SCREEN_HEIGHT - obstacle_height
@@ -251,12 +253,18 @@ def main():
         pygame.draw.rect(screen, obstacle_color, (obstacle_x, obstacle_y, obstacle_width, obstacle_height))
 
         # Verificar si el obstáculo ha salido de la pantalla y reposicionarlo si es necesario
-        if obstacle_x < -obstacle_width:
+        if obstacle_x < -obstacle_width or obs_destroyed == False:
+            obs_destroyed = True
             obstacle_x = SCREEN_WIDTH
             obstacle_y = SCREEN_HEIGHT - obstacle_height
+            if obstacle_counter != 0:
+                obstacle_speed = random.randint(3, 23)
+            obstacle_counter += 1
+            print(obstacle_speed)
 
         # Actualizar la pantalla
         pygame.display.update()
+
     while game_over_screen:
         screen.fill(BLACK)
         font = pygame.font.SysFont("IMPACT", 48)
