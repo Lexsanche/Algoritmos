@@ -107,9 +107,6 @@ def main():
             if background_x <= -bg_width:
                 background_x = 0
 
-
-
-
         if keys[pygame.K_LEFT]:
             puntaje= puntaje-10
             show_image = False
@@ -235,7 +232,6 @@ def main():
 
         if (obstacle_x < 100 and obstacle_y > 340) and (pos_x == 0 and pos_y == 340) and attack:
             game_over = False
-            obs_destroyed = True
             puntaje = puntaje + 15
             obstacle_x = SCREEN_WIDTH
             obstacle_y = SCREEN_HEIGHT - obstacle_height
@@ -246,6 +242,8 @@ def main():
                 if frame >= explosions:
                     frame = 0
             screen.blit(explosion_list[frame], (100, 300))
+            obstacle_speed = random.randint(3, 23)
+            attack = False
 
 
 
@@ -253,14 +251,12 @@ def main():
         pygame.draw.rect(screen, obstacle_color, (obstacle_x, obstacle_y, obstacle_width, obstacle_height))
 
         # Verificar si el obstáculo ha salido de la pantalla y reposicionarlo si es necesario
-        if obstacle_x < -obstacle_width or obs_destroyed == False:
-            obs_destroyed = True
+        if obstacle_x < -obstacle_width:
             obstacle_x = SCREEN_WIDTH
             obstacle_y = SCREEN_HEIGHT - obstacle_height
             if obstacle_counter != 0:
                 obstacle_speed = random.randint(3, 23)
             obstacle_counter += 1
-            print(obstacle_speed)
 
         # Actualizar la pantalla
         pygame.display.update()
