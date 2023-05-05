@@ -232,7 +232,7 @@ def main():
 
         if (obstacle_x < 100 and obstacle_y > 340) and (pos_x == 0 and pos_y == 340) and attack:
             game_over = False
-            puntaje = puntaje + 15
+            puntaje = puntaje + 1
             obstacle_x = SCREEN_WIDTH
             obstacle_y = SCREEN_HEIGHT - obstacle_height
             current_time = pygame.time.get_ticks()
@@ -242,7 +242,10 @@ def main():
                 if frame >= explosions:
                     frame = 0
             screen.blit(explosion_list[frame], (100, 300))
-            obstacle_speed = random.randint(3, 23)
+            if obstacle_counter <= 10:
+                obstacle_speed = random.randint(3, 10)
+            elif obstacle_counter > 10:
+                obstacle_speed = random.randint(3, 20)
             attack = False
 
 
@@ -254,8 +257,10 @@ def main():
         if obstacle_x < -obstacle_width:
             obstacle_x = SCREEN_WIDTH
             obstacle_y = SCREEN_HEIGHT - obstacle_height
-            if obstacle_counter != 0:
-                obstacle_speed = random.randint(3, 23)
+            if obstacle_counter != 0 and obstacle_counter <= 10:
+                obstacle_speed = random.randint(3, 10)
+            elif obstacle_counter != 0 and obstacle_counter > 10:
+                obstacle_speed = random.randint(3, 20)
             obstacle_counter += 1
 
         # Actualizar la pantalla
