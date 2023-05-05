@@ -241,7 +241,7 @@ def main():
             if current_time - last_update >= explosion_cooldown:
                 frame = (frame + 1) % explosions
                 last_update = current_time
-                if frame >= len(explosions):
+                if frame >= explosions:
                     frame = 0
             screen.blit(explosion_list[frame], (100, 300))
 
