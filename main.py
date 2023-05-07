@@ -89,7 +89,6 @@ def main():
         # Obtener las teclas presionadas
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RIGHT]:
-            puntaje = puntaje + 10
             show_image = False
             walking_inversed = False
             jumping = False
@@ -108,7 +107,6 @@ def main():
                 background_x = 0
 
         if keys[pygame.K_LEFT]:
-            puntaje= puntaje-10
             show_image = False
             walking = False
             jumping = False
@@ -223,6 +221,8 @@ def main():
         else:
             pass
 
+        # Dibujar el obstáculo
+        pygame.draw.rect(screen, obstacle_color, (obstacle_x, obstacle_y, obstacle_width, obstacle_height))
         # Mover el obstáculo hacia la izquierda
         obstacle_x -= obstacle_speed
 
@@ -243,24 +243,23 @@ def main():
                     frame = 0
             screen.blit(explosion_list[frame], (100, 300))
             if obstacle_counter <= 10:
-                obstacle_speed = random.randint(3, 10)
+                obstacle_speed = random.randint(3, 8)
             elif obstacle_counter > 10:
-                obstacle_speed = random.randint(3, 20)
+                obstacle_speed = random.randint(3, 15)
             attack = False
 
 
 
-        # Dibujar el obstáculo
-        pygame.draw.rect(screen, obstacle_color, (obstacle_x, obstacle_y, obstacle_width, obstacle_height))
+
 
         # Verificar si el obstáculo ha salido de la pantalla y reposicionarlo si es necesario
         if obstacle_x < -obstacle_width:
             obstacle_x = SCREEN_WIDTH
             obstacle_y = SCREEN_HEIGHT - obstacle_height
             if obstacle_counter != 0 and obstacle_counter <= 10:
-                obstacle_speed = random.randint(3, 10)
+                obstacle_speed = random.randint(3, 8)
             elif obstacle_counter != 0 and obstacle_counter > 10:
-                obstacle_speed = random.randint(3, 20)
+                obstacle_speed = random.randint(3, 15)
             obstacle_counter += 1
 
         # Actualizar la pantalla
