@@ -24,6 +24,7 @@ Para la creacion de este juego se pensaron en usar varias metodologias, de las c
 Los algoritmos para este proyecto presentaran primero una ayuda para la carga de los sprites y obstaculos del juegos, ademas de asi ayudar a no sobresaturar la memoria:
 
 - Eliminacion de objetos
+- Carga de sprites mediante listas
 - Ordenamiento de datos
 - Gestion de memoria
 
