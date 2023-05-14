@@ -27,5 +27,13 @@ Los algoritmos para este proyecto presentaran primero una ayuda para la carga de
 - Ordenamiento de datos
 - Gestion de memoria
 
+# COMO SE JUEGA
+
+Los controles del juego son los siguientes:
+
+- Las flechas del teclado, sirven para la movilidad del personaje.
+    - Flechas izquierda y derecha: Mueven al personaje a lo largo del escenario. Es importante tener en cuenta que los obstaculos pueden aumentar o disminuir la velocidad segun la direccion en la que se mueva el personaje.
+    - Flecha hacia arriba: Sirve para saltar y esquivar los obstaculos.
+- Barra espaciadora: Realiza la animacion de ataque del samurai. Cuando el ataque choca contra el obstaculo, este desaparece y se genera uno nuevo.
 
 
