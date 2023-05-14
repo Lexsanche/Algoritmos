@@ -11,9 +11,21 @@ Este es el resultado del proyecto de la materia de análisis de algoritmos en la
 
 El juego creado para este proyecto tiene como temática la época de los samuráis. El objetivo del juego es matar y esquivar obstáculos para ganar puntos y alcanzar la máxima puntuación posible.
 
-## Algoritmos implementados
+# METODOLOGIAS APLICADAS
 
-## Proyecto:
-<span style="font-size:24px; font-family:Times New Roman; font-weight:bold; letter-spacing:2px; color: green;">Un juego con samurais (?)</span>
+Para la creacion de este juego se pensaron en usar varias metodologias, de las cuales no se terminaron por usar todas, algunas de las mas usadas durante la realizacion del juego fueron:
+
+- Analisis de requerimientos.
+- Analisis de arquitectura de software
+- Desarrollo incremental
+
+## ALGORITMOS A IMPLEMENTAR
+
+Los algoritmos para este proyecto presentaran primero una ayuda para la carga de los sprites y obstaculos del juegos, ademas de asi ayudar a no sobresaturar la memoria:
+
+- Eliminacion de objetos
+- Ordenamiento de datos
+- Gestion de memoria
+
 
 
